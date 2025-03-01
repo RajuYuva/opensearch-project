@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: opensearch-cluster
+  namespace: opensearch
+spec:
+  serviceName: "opensearch-cluster"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: opensearch
+  template:
+    metadata:
+      labels:
+        app: opensearch
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: opensearch
+        image: opensearchproject/opensearch:2.7.0
+        ports:
+        - containerPort: 9200
+        volumeMounts:
+        - name: opensearch-config
+          mountPath: /usr/share/opensearch/config/opensearch.yml
+          subPath: opensearch.yml
+        - name: opensearch-storage
+          mountPath: /usr/share/opensearch/data
+      volumes:
+      - name: opensearch-config
+        configMap:
+          name: opensearch-config
+  volumeClaimTemplates:
+  - metadata:
+      name: opensearch-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
+      storageClassName: gp2

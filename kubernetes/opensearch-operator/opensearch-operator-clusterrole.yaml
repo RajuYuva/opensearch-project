@@ -1,0 +1,54 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: opensearch-operator-role
+rules:
+  - apiGroups: [""]
+    resources:
+      - "pods"
+      - "services"
+      - "endpoints"
+      - "persistentvolumeclaims"
+      - "events"
+      - "configmaps"
+      - "secrets"
+    verbs: ["*"]
+
+  - apiGroups: ["apps"]
+    resources:
+      - "statefulsets"
+      - "deployments"
+      - "replicasets"
+    verbs: ["*"]
+
+  - apiGroups: ["batch"]
+    resources:
+      - "jobs"
+      - "cronjobs"
+    verbs: ["*"]
+
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources:
+      - "roles"
+      - "rolebindings"
+    verbs: ["*"]
+
+  - apiGroups: ["coordination.k8s.io"]  # ✅ Added leases permission for leader election
+    resources:
+      - "leases"
+    verbs: ["get", "list", "create", "update", "patch"]
+
+  - apiGroups: ["opensearch.opster.io"]
+    resources:
+      - "opensearchclusters"
+      - "opensearchclusters/status"
+      - "opensearchindextemplates"
+      - "opensearchactiongroups"
+      - "opensearchcomponenttemplates"
+      - "opensearchtenants"
+      - "opensearchuserrolebindings"
+      - "opensearchroles"
+      - "opensearchusers"
+      - "opensearchismpolicies"
+    verbs: ["*"]
+

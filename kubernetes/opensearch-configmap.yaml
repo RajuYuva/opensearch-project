@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opensearch-config
+  namespace: opensearch
+data:
+  opensearch.yml: |
+    cluster.name: opensearch-cluster
+    node.name: ${HOSTNAME}
+    network.host: 0.0.0.0
+    discovery.seed_hosts: ["opensearch-cluster-0.opensearch-cluster", "opensearch-cluster-1.opensearch-cluster", "opensearch-cluster-2.opensearch-cluster"]
+    cluster.initial_cluster_manager_nodes: ["opensearch-cluster-0", "opensearch-cluster-1", "opensearch-cluster-2"]
+    bootstrap.memory_lock: true
+    plugins.security.disabled: true

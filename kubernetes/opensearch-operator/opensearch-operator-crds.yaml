@@ -1,0 +1,344 @@
+# OpenSearchCluster CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchclusters.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  names:
+    kind: OpenSearchCluster
+    listKind: OpenSearchClusterList
+    plural: opensearchclusters
+    singular: opensearchcluster
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                general:
+                  type: object
+                  properties:
+                    serviceName:
+                      type: string
+                      description: "Base name for OpenSearch services"
+                    version:
+                      type: string
+                      description: "Version of OpenSearch to deploy"
+                    drainDataNodes:
+                      type: boolean
+                      description: "Drain data nodes before rolling upgrades"
+                security:
+                  type: object
+                  properties:
+                    config:
+                      type: object
+                      properties:
+                        securityConfigSecret:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                    tls:
+                      type: object
+                      properties:
+                        transport:
+                          type: object
+                          properties:
+                            generate:
+                              type: boolean
+                            perNode:
+                              type: boolean
+                nodePools:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      component:
+                        type: string
+                      replicas:
+                        type: integer
+                      roles:
+                        type: array
+                        items:
+                          type: string
+                      resources:
+                        type: object
+                        properties:
+                          requests:
+                            type: object
+                            properties:
+                              cpu:
+                                type: string
+                              memory:
+                                type: string
+                          limits:
+                            type: object
+                            properties:
+                              cpu:
+                                type: string
+                              memory:
+                                type: string
+                      diskSize:
+                        type: string
+                        description: "Size of the disk for the node pool"
+                      persistence:  # ✅ Added missing 'persistence' support
+                        type: object
+                        properties:
+                          storageClass:
+                            type: string
+                            description: "Kubernetes StorageClass name"
+                          accessModes:
+                            type: array
+                            items:
+                              type: string
+                          emptyDir:
+                            type: object
+                            description: "Use emptyDir storage"
+                dashboards:
+                  type: object
+                  properties:
+                    enable:
+                      type: boolean
+                      description: "Enable OpenSearch Dashboards"
+                    version:
+                      type: string
+                      description: "Version of OpenSearch Dashboards"
+                    replicas:
+                      type: integer
+                      description: "Number of OpenSearch Dashboards replicas"
+                    tls:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                        generate:
+                          type: boolean
+                    resources:
+                      type: object
+                      properties:
+                        requests:
+                          type: object
+                          properties:
+                            cpu:
+                              type: string
+                            memory:
+                              type: string
+                        limits:
+                          type: object
+                          properties:
+                            cpu:
+                              type: string
+                            memory:
+                              type: string
+
+
+# OpensearchComponentTemplate CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchcomponenttemplates.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchComponentTemplate
+    listKind: OpensearchComponentTemplateList
+    plural: opensearchcomponenttemplates
+    singular: opensearchcomponenttemplate
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpensearchIndexTemplate CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchindextemplates.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchIndexTemplate
+    listKind: OpensearchIndexTemplateList
+    plural: opensearchindextemplates
+    singular: opensearchindextemplate
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpenSearchISMPolicy CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchismpolicies.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpenSearchISMPolicy
+    listKind: OpenSearchISMPolicyList
+    plural: opensearchismpolicies
+    singular: opensearchismpolicy
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpensearchRole CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchroles.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchRole
+    listKind: OpensearchRoleList
+    plural: opensearchroles
+    singular: opensearchrole
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpensearchTenant CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchtenants.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchTenant
+    listKind: OpensearchTenantList
+    plural: opensearchtenants
+    singular: opensearchtenant
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpensearchUserRoleBinding CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchuserrolebindings.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchUserRoleBinding
+    listKind: OpensearchUserRoleBindingList
+    plural: opensearchuserrolebindings
+    singular: opensearchuserrolebinding
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpensearchUser CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchusers.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchUser
+    listKind: OpensearchUserList
+    plural: opensearchusers
+    singular: opensearchuser
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+
+# OpensearchActionGroup CRD
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opensearchactiongroups.opensearch.opster.io
+spec:
+  group: opensearch.opster.io
+  scope: Namespaced
+  names:
+    kind: OpensearchActionGroup
+    listKind: OpensearchActionGroupList
+    plural: opensearchactiongroups
+    singular: opensearchactiongroup
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+

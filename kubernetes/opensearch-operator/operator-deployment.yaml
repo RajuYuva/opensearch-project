@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch-operator
+  namespace: opensearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: opensearch-operator
+  template:
+    metadata:
+      labels:
+        name: opensearch-operator
+    spec:
+      serviceAccountName: opensearch-operator-sa
+      containers:
+        - name: opensearch-operator
+          image: opensearchproject/opensearch-operator:2.7.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 60000
+          args:
+            - "--loglevel=debug"
+          env:
+          - name: WATCH_NAMESPACE
+            value: "opensearch"
+
