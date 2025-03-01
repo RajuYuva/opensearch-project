@@ -31,7 +31,7 @@ kubectl apply -f serviceaccount.yaml
 ```
 
 ### **2.2 Deploying Operator CRDs**
-The OpenSearch Operator requires **Custom Resource Definitions (CRDs)**. We installed them using:
+The OpenSearch Operator requires **Custom Resource Definitions (CRDs)**.  installed them using:
 
 ```sh
 kubectl apply -f opensearch-operator-crds.yaml
@@ -50,7 +50,7 @@ opensearchuserrolebindings.opensearch.opster.io     2025-03-01T11:54:47Z
 opensearchusers.opensearch.opster.io                2025-03-01T11:54:47Z
 ```
 ### **2.3 Creating Service Account & RBAC Permissions**
-To allow the **Operator to manage OpenSearch resources**, we created:
+To allow the **Operator to manage OpenSearch resources**.
 
 #### **ClusterRole for OpenSearch Operator**
 ```yaml
@@ -63,7 +63,7 @@ kubectl apply -f opensearch-operator-binding.yaml
 ```
 
 ### **2.4 Deploying the OpenSearch Operator**
-We applied the **Operator Deployment**:
+ applied the **Operator Deployment**:
 
 ```sh
 kubectl apply -f operator-deployment.yaml
@@ -81,7 +81,7 @@ opensearch-operator-56c7cdc79d-hjb2t   1/1     Running   0          3h53m
 ## **3. Deploying OpenSearch Cluster**
 
 ### **3.1 Applying OpenSearchCluster Resource**
-We deployed OpenSearch using the **Operator-managed custom resource**:
+ deployed OpenSearch using the **Operator-managed custom resource**:
 
 ```yaml
 apiVersion: opensearch.opster.io/v1
@@ -150,14 +150,14 @@ kubectl get statefulsets -n opensearch
 ## **4. Troubleshooting Operator & Cluster Issues**
 
 ### **4.1 Issue: Operator Not Creating StatefulSets, PVCs, or Services**
-- We checked operator logs:
+- checked operator logs:
   ```sh
   kubectl logs -n opensearch deployment/opensearch-operator
   ```
 - Found **reconciliation errors** where OpenSearchCluster was stuck and did not create StatefulSets.
 
 #### **Manual Fix: Created StatefulSet for OpenSearch**
-Since the operator failed, we **manually created a StatefulSet**:
+Since the operator failed, **manually created a StatefulSet**:
 
 ```yaml
 apiVersion: apps/v1
@@ -219,7 +219,7 @@ kubectl apply -f opensearch-statefulset.yaml
 - The cluster needed **EBS CSI drivers** for volume management.
 
 ### **5.2 Solution: Installed EBS CSI Drivers**
-We installed the **Amazon EBS CSI Driver**:
+installed the **Amazon EBS CSI Driver**:
 
 ```sh
 eksctl create addon --name aws-ebs-csi-driver --cluster <eks-cluster-name> --region <aws-region>
